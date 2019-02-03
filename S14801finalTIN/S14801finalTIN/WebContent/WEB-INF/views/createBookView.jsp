@@ -6,7 +6,7 @@
 <html>
    <head>
       <meta charset="UTF-8">
-      <title>Create Product</title>
+      <title>Create Book & connection between authors</title>
    </head>
    <body>
     
@@ -29,11 +29,27 @@
             </tr>
             <tr>
                <td>ISBN</td>
-               <td><input type="text" name="ISBN" value="${book.ISBN}" /></td>
+               <td><input type="text" name="ISBN" id="numberField" value="${book.ISBN}" /></td>
             </tr>
             <tr>
+            <script language="javascript">
+	            function validate(numberField){
+	            	var valid=true;
+	            	
+	            		console.log("TEST");
+	            		var numberformat = /^[0-9]+$/;
+	            		if(!numberField.value.match(numberformat))
+	            		{
+	            			console.log(numberField.value.match(numberformat));
+	            			valid=false;
+	            			alert("Wrong ISBN number! Remember - only numbers");
+	            		}
+	            		
+	            	return valid;
+	            }
+			</script>
                <td colspan="2">                   
-                   <input type="submit" value="Submit" />
+                   <button type="submit" value="Submit"  onclick="validate(numberField)"/>Submit!</button>
                    <a href="bookList">Cancel</a>
                </td>
             </tr>

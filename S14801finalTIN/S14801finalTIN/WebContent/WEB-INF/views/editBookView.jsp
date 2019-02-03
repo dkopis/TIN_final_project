@@ -25,12 +25,12 @@
                   <td style="color:red;">${book.ISBN}</td>
                </tr>
                <tr>
-                  <td>Title</td>
-                  <td><input type="text" name="title" value="${book.title}" /></td>
+                  <td>Author</td>
+                  <td style="color:black;">${book.author}</td>
                </tr>
                <tr>
-                  <td>Author</td>
-                  <td><input type="text" name="author" value="${book.author}" /></td>
+                  <td>Title</td>
+                  <td><input type="text" name="title" value="${book.title}" /></td>
                </tr>
                <tr>
                   <td colspan = "2">

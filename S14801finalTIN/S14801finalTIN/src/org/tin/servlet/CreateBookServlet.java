@@ -10,8 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.tin.beans.Book;
+import org.tin.beans.UserAccount;
 import org.tin.utils.DBUtils;
 import org.tin.utils.MyUtils;
  
@@ -26,7 +28,7 @@ public class CreateBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
- 
+    	
         RequestDispatcher dispatcher = request.getServletContext()
                 .getRequestDispatcher("/WEB-INF/views/createBookView.jsp");
         dispatcher.forward(request, response);
@@ -35,7 +37,17 @@ public class CreateBookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Connection conn = MyUtils.getStoredConnection(request);
+    	HttpSession session = request.getSession();
+   	 
+        UserAccount loginedUser = MyUtils.getLoginedUser(session);
+
+        if (loginedUser == null) {
+	        System.out.println("No login");
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+    	
+    	Connection conn = MyUtils.getStoredConnection(request);
  
         String title = (String) request.getParameter("title");
         String author = (String) request.getParameter("author");

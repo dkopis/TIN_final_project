@@ -16,13 +16,13 @@ import javax.servlet.http.HttpSession;
 import org.tin.beans.Book;
 import org.tin.beans.UserAccount;
 import org.tin.utils.DBUtils;
-import org.tin.utils.MyUtils;
+	import org.tin.utils.MyUtils;
 	 
-	@WebServlet(urlPatterns = { "/bookList" })
-	public class BookListServlet extends HttpServlet {
+	@WebServlet(urlPatterns = { "/booksList" })
+	public class BooksServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	 
-	    public BookListServlet() {
+	    public BooksServlet() {
 	        super();
 	    }
 	 
@@ -34,12 +34,12 @@ import org.tin.utils.MyUtils;
 	    	 
 	        UserAccount loginedUser = MyUtils.getLoginedUser(session);
 
-	        if (loginedUser == null || loginedUser.getRespName().equals("User")) {
+	        if (loginedUser == null) {
 		        System.out.println("No login");
 	            response.sendRedirect(request.getContextPath() + "/login");
 	            return;
 	        }
-	        
+	    	
 	        Connection conn = MyUtils.getStoredConnection(request);
 	 
 	        String errorString = null;
@@ -47,15 +47,16 @@ import org.tin.utils.MyUtils;
 	        try {
 	            list = DBUtils.queryBook(conn);
 	        } catch (SQLException e) {
+	        	System.out.println("To tutaj sie wywala");
 	            e.printStackTrace();
 	            errorString = e.getMessage();
 	        }
 	        // Store info in request attribute, before forward to views
 	        request.setAttribute("errorString", errorString);
-	        request.setAttribute("bookList", list);
+	        request.setAttribute("booksList", list);
 	         
 	        RequestDispatcher dispatcher = request.getServletContext()
-	                .getRequestDispatcher("/WEB-INF/views/bookListView.jsp");
+	                .getRequestDispatcher("/WEB-INF/views/booksView.jsp");
 	        dispatcher.forward(request, response);
 	    }
 	 

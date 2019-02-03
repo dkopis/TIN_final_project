@@ -37,27 +37,19 @@ public class JDBCFilter implements Filter {
     // Check the target of the request is a servlet?
     private boolean needJDBC(HttpServletRequest request) {
         System.out.println("JDBC Filter");
-        // 
-        // Servlet Url-pattern: /spath/*
-        // 
-        // => /spath
+       
         String servletPath = request.getServletPath();
-        // => /abc/mnp
         String pathInfo = request.getPathInfo();
  
         String urlPattern = servletPath;
  
         if (pathInfo != null) {
-            // => /spath/*
             urlPattern = servletPath + "/*";
         }
  
-        // Key: servletName.
-        // Value: ServletRegistration
         Map<String, ? extends ServletRegistration> servletRegistrations = request.getServletContext()
                 .getServletRegistrations();
  
-        // Collection of all servlet in your Webapp.
         Collection<? extends ServletRegistration> values = servletRegistrations.values();
         for (ServletRegistration sr : values) {
             Collection<String> mappings = sr.getMappings();
@@ -74,12 +66,6 @@ public class JDBCFilter implements Filter {
  
         HttpServletRequest req = (HttpServletRequest) request;
  
-        // Only open connections for the special requests.
-        // (For example, the path to the servlet, JSP, ..)
-        // 
-        // Avoid open connection for commons request.
-        // (For example: image, css, javascript,... )
-        // 
         if (this.needJDBC(req)) {
  
             System.out.println("Open Connection for: " + req.getServletPath());

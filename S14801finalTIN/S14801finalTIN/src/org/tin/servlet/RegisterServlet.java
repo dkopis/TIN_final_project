@@ -18,30 +18,28 @@ import javax.servlet.http.HttpSession;
 import org.tin.beans.UserAccount;
 import org.tin.utils.DBUtils;
 import org.tin.utils.MyUtils;
- 
-@WebServlet(urlPatterns = { "/login" })
-public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
- 
-    public LoginServlet() {
-        super();
-    }
- 
-    // Show Login page.
-    @Override
+
+@WebServlet(urlPatterns = { "/register" })
+public class RegisterServlet extends HttpServlet{
+	private static final long serialVersionUID = 1L;
+	public RegisterServlet() {
+		super();
+	}
+	
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
  
         RequestDispatcher dispatcher 
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
  
         dispatcher.forward(request, response);
  
     }
- 
-    @Override
+	
+	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
+            throws ServletException, IOException {
         String userName = request.getParameter("userName");
         String tmp_password = request.getParameter("password");
 
@@ -59,10 +57,9 @@ public class LoginServlet extends HttpServlet {
 			e1.printStackTrace();
 			System.out.println("Error during MD5 password");
 		}
-         
+        
 		String password=request.getParameter("password");
-        String rememberMeStr = request.getParameter("rememberMe");
-        boolean remember = "Y".equals(rememberMeStr);
+        //request.getParameter("password");
  
         UserAccount user = null;
         boolean hasError = false;
@@ -72,49 +69,32 @@ public class LoginServlet extends HttpServlet {
             hasError = true;
             errorString = "Required username and password!";
         } else {
+        	password = tmp_password;
             Connection conn = MyUtils.getStoredConnection(request);
             try {
                 // Find the user in the DB.
-            	System.out.println("1");
-            	 password = tmp_password;
-                user = DBUtils.findUser(conn, userName, password);
-                
-                if (user == null) {
-                    hasError = true;
-                    errorString = "User Name or password invalid";
-                }
+                user = DBUtils.createUser(conn, userName, password);
             } catch (SQLException e) {
                 e.printStackTrace();
                 hasError = true;
-                errorString = e.getMessage();
+                errorString = "User already exists in data base!";//e.getMessage();
             }
         }
+        // If error, forward to /WEB-INF/views/login.jsp
         if (hasError) {
             user = new UserAccount();
             user.setUserName(userName);
             user.setPassword(password);
-            
+ 
+            // Store information in request attribute, before forward.
             request.setAttribute("errorString", errorString);
             request.setAttribute("user", user);
-            System.out.print("2a");
+ 
+            // Forward to /WEB-INF/views/login.jsp
             RequestDispatcher dispatcher //
-                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
  
             dispatcher.forward(request, response);
         }
-        else {
-            HttpSession session = request.getSession();
-            MyUtils.storeLoginedUser(session, user);
- 
-            if (remember) {
-                MyUtils.storeUserCookie(response, user);
-            }
-            else {
-                MyUtils.deleteUserCookie(response);
-            }
- 
-            response.sendRedirect(request.getContextPath() + "/userInfo");
-        }
     }
- 
 }

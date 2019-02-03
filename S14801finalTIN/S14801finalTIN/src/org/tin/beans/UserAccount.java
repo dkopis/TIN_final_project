@@ -8,6 +8,7 @@ public class UserAccount {
 	   private String userName;
 	   private String gender;
 	   private String password;
+	   private String respName;
 	    
 	 
 	   public UserAccount() {
@@ -36,6 +37,14 @@ public class UserAccount {
 	 
 	   public void setPassword(String password) {
 	       this.password = password;
+	   }
+	   
+	   public String getRespName() {
+	       return respName;
+	   }
+	 
+	   public void setRespName(String respName) {
+	       this.respName = respName;
 	   }
 	 
 	}

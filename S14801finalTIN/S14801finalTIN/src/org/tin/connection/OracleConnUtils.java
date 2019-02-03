@@ -10,10 +10,10 @@ public class OracleConnUtils {
            throws ClassNotFoundException, SQLException {
         
        // Note: Change the connection parameters accordingly.
-       String hostName = "XXXXXXXXXX";
-       String sid = "XXXXXX";
-       String userName = "XXXXXXX";
-       String password = "XXXXXXXXX";
+	   String hostName = "xxxxx";
+       String sid = "xxx";
+       String userName = "xxxx";
+       String password = "xxxx";
   
        return getOracleConnection(hostName, sid, userName, password);
    }

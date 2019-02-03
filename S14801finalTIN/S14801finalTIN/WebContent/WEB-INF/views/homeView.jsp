@@ -17,8 +17,10 @@
       <b>It includes the following functions:</b>
       <ul>
          <li>Login</li>
+         <li>Registration&storing hashed passwords</li>
+         <li>Page "Books List" is availible for all users, but "Administrator: Book List" is availible only for admin</li>
          <li>Storing user information in cookies</li>
-         <li>Product List</li>
+         <li>Book List</li>
          <li>Create Book</li>
          <li>Edit Book</li>
          <li>Delete Book</li>
